@@ -1,46 +1,50 @@
 import fs from 'fs';
 import path from 'path';
+import matter from 'gray-matter';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
-export interface MarkdownFile {
-  slug: string;
+export interface ProjectMetadata {
   title: string;
-  modifiedDate: Date;
+  slug: string;
 }
 
-export function getAllMarkdownFiles(): MarkdownFile[] {
-  if (!fs.existsSync(contentDirectory)) {
-    return [];
-  }
+export interface ProjectData extends ProjectMetadata {
+  content: string;
+}
 
-  const files = fs.readdirSync(contentDirectory);
-  const markdownFiles = files
-    .filter((file) => file.endsWith('.md'))
-    .map((file) => {
-      const slug = file.replace(/\.md$/, '');
-      const filePath = path.join(contentDirectory, file);
-      const stats = fs.statSync(filePath);
-      const content = fs.readFileSync(filePath, 'utf8');
-      const firstLine = content.split('\n')[0];
-      const title = firstLine.replace(/^\*\*|\*\*$/g, '').trim();
+export function getAllProjects(): ProjectData[] {
+  const fileNames = fs.readdirSync(contentDirectory);
+  const projects = fileNames
+    .filter(fileName => fileName.endsWith('.md'))
+    .map(fileName => {
+      const slug = fileName.replace(/\.md$/, '');
+      const fullPath = path.join(contentDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const { data, content } = matter(fileContents);
 
       return {
         slug,
-        title,
-        modifiedDate: stats.mtime,
+        title: data.title || slug,
+        content,
       };
     });
 
-  return markdownFiles.sort((a, b) => b.modifiedDate.getTime() - a.modifiedDate.getTime());
+  return projects;
 }
 
-export function getMarkdownContent(slug: string): string | null {
-  const filePath = path.join(contentDirectory, `${slug}.md`);
+export function getProjectBySlug(slug: string): ProjectData | null {
+  try {
+    const fullPath = path.join(contentDirectory, `${slug}.md`);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const { data, content } = matter(fileContents);
 
-  if (!fs.existsSync(filePath)) {
+    return {
+      slug,
+      title: data.title || slug,
+      content,
+    };
+  } catch (error) {
     return null;
   }
-
-  return fs.readFileSync(filePath, 'utf8');
 }

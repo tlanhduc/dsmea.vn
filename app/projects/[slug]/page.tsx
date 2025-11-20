@@ -1,65 +1,52 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getAllMarkdownFiles, getMarkdownContent } from '@/lib/markdown';
-import MarkdownRenderer from '@/components/MarkdownRenderer';
+import { getAllProjects, getProjectBySlug } from '@/lib/markdown';
+import MarkdownViewer from '@/components/MarkdownViewer';
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const files = getAllMarkdownFiles();
-  return files.map((file) => ({
-    slug: file.slug,
+  const projects = getAllProjects();
+  return projects.map((project) => ({
+    slug: project.slug,
   }));
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const content = getMarkdownContent(slug);
+  const project = getProjectBySlug(slug);
 
-  if (!content) {
+  if (!project) {
     notFound();
   }
 
-  const files = getAllMarkdownFiles();
-  const currentFile = files.find((f) => f.slug === slug);
-
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-8">
+    <div className="bg-gradient">
+      <div className="container" style={{maxWidth: '1200px', padding: '2rem 1rem'}}>
         <Link
           href="/"
-          className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6 transition-colors"
+          className="btn btn-primary"
+          style={{marginBottom: '1.5rem', display: 'inline-flex', alignItems: 'center', textDecoration: 'none'}}
         >
-          <svg
-            className="w-5 h-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            />
+          <svg style={{width: '1.25rem', height: '1.25rem', marginRight: '0.5rem'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Quay lại danh sách dự án
+          Quay lại danh sách
         </Link>
 
-        {currentFile && (
-          <div className="mb-6 pb-6 border-b border-gray-200">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {currentFile.title}
+        <div className="card" style={{padding: '3rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'}}>
+          <header style={{marginBottom: '2rem', borderBottom: '1px solid #e5e7eb', paddingBottom: '1.5rem'}}>
+            <h1 style={{fontSize: '2.5rem', fontWeight: '700', color: '#111827', marginBottom: '0.5rem'}}>
+              {project.title}
             </h1>
-            <p className="text-sm text-gray-500">
-              Cập nhật: {new Date(currentFile.modifiedDate).toLocaleDateString('vi-VN')}
-            </p>
-          </div>
-        )}
+          </header>
 
-        <MarkdownRenderer content={content} />
+          <main>
+            <MarkdownViewer content={project.content} />
+          </main>
+        </div>
       </div>
     </div>
   );
