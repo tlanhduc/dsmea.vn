@@ -1,12 +1,12 @@
 import fs from 'fs';
 import path from 'path';
+import matter from 'gray-matter';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
-export interface MarkdownFile {
-  slug: string;
+export interface ProjectMetadata {
   title: string;
-  modifiedDate: Date;
+  slug: string;
 }
 
 export interface DocumentLink {
