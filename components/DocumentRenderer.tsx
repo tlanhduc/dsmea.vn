@@ -2,16 +2,29 @@
 
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import { ErrorBoundary } from 'react-error-boundary';
 
-interface MarkdownRendererProps {
+interface DocumentRendererProps {
   content: string;
+  type: 'html';
 }
 
-export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
+function ErrorFallback({ error }: { error: Error }) {
+  return (
+    <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <p className="text-red-800 font-semibold mb-2">Lỗi khi render markdown:</p>
+      <p className="text-red-600 text-sm">{error.message}</p>
+    </div>
+  );
+}
+
+function MarkdownContent({ content }: { content: string }) {
   return (
     <div className="markdown-content">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
         components={{
           table: ({ node, ...props }) => (
             <div className="overflow-x-auto my-6 border border-gray-300 rounded-lg">
@@ -82,5 +95,31 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         {content}
       </ReactMarkdown>
     </div>
+  );
+}
+
+export default function DocumentRenderer({ content, type }: DocumentRendererProps) {
+  // Xử lý HTML: thêm target="_blank" cho tất cả link
+  const processedContent = content.replace(
+    /<a\s+([^>]*href=["'][^"']*["'][^>]*)>/gi,
+    (match, attrs) => {
+      // Kiểm tra xem đã có target chưa
+      if (!/target=/i.test(attrs)) {
+        return `<a ${attrs} target="_blank" rel="noopener noreferrer">`;
+      }
+      return match;
+    }
+  );
+
+  return (
+    <div 
+      className="markdown-content word-document"
+      style={{ 
+        fontFamily: 'Times New Roman, serif',
+        fontSize: '12pt',
+        lineHeight: '1.5',
+      }}
+      dangerouslySetInnerHTML={{ __html: processedContent }}
+    />
   );
 }

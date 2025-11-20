@@ -30,6 +30,176 @@ body {
   line-height: 1.6;
 }
 
+/* Styles for HTML content from Word documents */
+.markdown-content.word-document {
+  color: #000000;
+  font-family: 'Times New Roman', serif;
+  font-size: 12pt;
+  line-height: 1.5;
+}
+
+/* Preserve Word document formatting */
+.markdown-content.word-document * {
+  box-sizing: border-box;
+}
+
+.markdown-content.word-document p {
+  margin: 0 0 6pt 0;
+  text-align: justify;
+}
+
+.markdown-content.word-document table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000;
+  margin: 12pt 0;
+}
+
+.markdown-content.word-document table td,
+.markdown-content.word-document table th {
+  border: 1px solid #000;
+  padding: 4pt;
+  vertical-align: top;
+  text-align: left;
+}
+
+.markdown-content.word-document table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.markdown-content.word-document strong,
+.markdown-content.word-document b {
+  font-weight: bold;
+}
+
+.markdown-content.word-document em,
+.markdown-content.word-document i {
+  font-style: italic;
+}
+
+.markdown-content.word-document u {
+  text-decoration: underline;
+}
+
+.markdown-content.word-document h1,
+.markdown-content.word-document h2,
+.markdown-content.word-document h3,
+.markdown-content.word-document h4,
+.markdown-content.word-document h5,
+.markdown-content.word-document h6 {
+  margin: 12pt 0 6pt 0;
+  font-weight: bold;
+}
+
+.markdown-content.word-document ul,
+.markdown-content.word-document ol {
+  margin: 6pt 0;
+  padding-left: 36pt;
+}
+
+.markdown-content.word-document li {
+  margin: 3pt 0;
+}
+
+.markdown-content.word-document a {
+  color: #0000ff;
+  text-decoration: underline;
+}
+
+/* Preserve inline styles from Word */
+.markdown-content.word-document [style] {
+  /* Let inline styles override */
+}
+
+/* Styles for HTML content from Word documents (prose variant) */
+.markdown-content.prose {
+  color: #374151;
+}
+
+.markdown-content.prose h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content.prose h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-content.prose h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content.prose p {
+  font-size: 1rem;
+  color: #374151;
+  margin-bottom: 1rem;
+  line-height: 1.75;
+}
+
+.markdown-content.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.markdown-content.prose table th,
+.markdown-content.prose table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-right: 1px solid #e5e7eb;
+  vertical-align: top;
+}
+
+.markdown-content.prose table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+  color: #111827;
+}
+
+.markdown-content.prose table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.markdown-content.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.markdown-content.prose a:hover {
+  color: #1e40af;
+}
+
+.markdown-content.prose strong {
+  font-weight: 700;
+  color: #111827;
+}
+
+.markdown-content.prose ul,
+.markdown-content.prose ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.markdown-content.prose li {
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
 .markdown-content table {
   border-collapse: collapse;
   width: 100%;
