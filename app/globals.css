@@ -227,3 +227,24 @@ body {
     padding: 0.5rem !important;
   }
 }
+
+/* Hide devtools indicator */
+#devtools-indicator,
+.devtools-indicator,
+[class*="devtools-indicator"],
+[id*="devtools-indicator"],
+[class*="devtools"],
+[id*="devtools"],
+[data-nextjs-toast],
+[class*="__next-dev-overlay"],
+[class*="__next-dev-indicator"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
